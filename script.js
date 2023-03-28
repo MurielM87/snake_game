@@ -3,7 +3,7 @@ let apple;
 let snakeGame;
 
 window.onload = function () {
-    snakeGame = new SnakeGame(900, 600, 30, 500) //canvasWidth, canvasWidth, blockSize, delay
+    snakeGame = new SnakeGame(900, 600, 30, 200) //canvasWidth, canvasWidth, blockSize, delay
     snake = new Snake([[6, 4], [5, 4], [4, 4]], "right")
     apple = new Apple([10, 10]);
 
@@ -76,7 +76,10 @@ function SnakeGame(canvasWidth, canvasHeight, blockSize, delay) {
                 instance.snake.ateApple = true;
                 do {
                     instance.apple.setNewPosition(instance.widthInBlocks, instance.heightInBlocks);
-                } while (instance.apple.isOnSnake(instance.snake))
+                } while (instance.apple.isOnSnake(instance.snake));
+                if(instance.score % 5 == 0) {
+                    speedUp();
+                }
             }
             instance.ctx.clearRect(0, 0, instance.canvas.width, instance.canvas.height);
             instance.drawScore();
@@ -84,7 +87,9 @@ function SnakeGame(canvasWidth, canvasHeight, blockSize, delay) {
             instance.apple.draw(instance.ctx, instance.blockSize);
             timeout = setTimeout(refreshCanvas, delay);
         };
-
+        function speedUp(){
+            instance.delay /= 2;
+        }
     };
 
     this.checkCollision = function () {
